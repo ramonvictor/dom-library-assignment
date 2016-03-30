@@ -1,0 +1,15 @@
+{
+  "name": "dom-lib",
+  "version": "1.0.0",
+  "private": true,
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --ui tdd"
+  },
+  "author": "",
+  "dependencies": {
+    "jsdom": "^8.2.0",
+    "mocha": "^2.4.5"
+  }
+}
