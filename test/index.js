@@ -26,7 +26,7 @@ test('query by class', () => {
 test('query children', () => {
     var found = $('#test2 > li')
     t.equal(found.length, 4)
-    t.equal(found[0], qsa('#test2 > li'))
+    t.equal(found[0], qs('#test2 > li'))
 })
 
 test('.text()', () => {
