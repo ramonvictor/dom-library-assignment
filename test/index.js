@@ -32,7 +32,7 @@ test('query children', () => {
 test('.text()', () => {
     var el = $('#test2 > li:nth-child(2)')
     t.equal(typeof el.text, 'function')
-    t.equal(el.text(), '3')
+    t.equal(el.text(), '2')
 })
 
 test('.html()', () => {
