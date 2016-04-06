@@ -16,9 +16,19 @@ function getSelector(s) {
 	return [].slice.call(document.querySelectorAll(s));
 }
 
+function extend(a, b) {
+	for (var key in b) {
+		if (b.hasOwnProperty(key)) {
+			a[key] = b[key];
+		}
+	}
+
+	return a;
+}
+
 // Public
 // ----------------
-rQuery.prototype = {
+var api = {
 	get: function(index) {
 		return this[index];
 	},
@@ -33,13 +43,15 @@ rQuery.prototype = {
 };
 
 // Extend useful array methods
-rQuery.prototype.forEach = arr.forEach;
-rQuery.prototype.reduce = arr.reduce;
-rQuery.prototype.push = arr.push;
-rQuery.prototype.sort = arr.sort;
-rQuery.prototype.splice = arr.splice;
-rQuery.prototype.indexOf = arr.indexOf;
+api.forEach = arr.forEach;
+api.reduce = arr.reduce;
+api.push = arr.push;
+api.sort = arr.sort;
+api.splice = arr.splice;
+api.indexOf = arr.indexOf;
 
+// Extending rQuery
+extend(rQuery.prototype, api);
 
 // Exports
 // ----------------
