@@ -42,3 +42,40 @@ test('.html()', () => {
     t.equal(typeof el.html, 'function')
     t.equal(el.html(), el2.innerHTML)
 })
+
+test('chaining', () => {
+    var selector = '#test2'
+    t.equal($(selector).eq(0).html(), qs(selector).innerHTML)
+})
+
+test('receive element', () => {
+    var element = qs('#test2')
+    var o = $(element)
+    t.equal(o.length, 1)
+    t.equal(o.get(0), element)
+})
+
+test('receive array of elements', () => {
+    var collection = qsa('#test2 > li')
+    var o = $(collection)
+    t.equal(o.length, 4)
+    t.deepEqual(o.get(), collection)
+})
+
+test('receive self', () => {
+    var el = $('#test2')
+    var el2 = $(el)
+    t.equal(el[0], el2[0])
+})
+
+// TODO: write test case
+// test('filter')
+
+// $('li').filter('.xxx')
+// $('li').filter('input')
+// $('li').filter('input[type=date]')
+// $('li').filter(':not(input)')
+// $('li').not('input')
+// $('li').filter(function (el, i) {
+//     return el.style.display !== 'block'
+// }).eq(1).html()
