@@ -83,5 +83,5 @@ test('filter', () => {
     t.equal(o1.text(), children[0].textContent)
     t.equal(o2.get(0), collection[1])
     t.equal(o3.length, 3)
-    t.equal(o4.eq(1).html(), collection[3].innerHTML)
+    t.equal(o4.eq(0).html(), collection[3].innerHTML)
 });

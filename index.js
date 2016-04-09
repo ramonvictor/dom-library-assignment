@@ -1,4 +1,5 @@
 var arr = [];
+var filter = arr.filter;
 
 function rQuery(option) {
 	var elements = getElements(option);
@@ -37,6 +38,22 @@ rQuery.prototype.text = function() {
 	return this.get(0).textContent;
 };
 
+rQuery.prototype.filter = function(arg) {
+	var result = filter.call(this, function(el, i) {
+		var matches = false;
+
+		if (typeof arg === 'string') {
+			matches = selectorMatches(el, arg);
+		} else if (typeof arg === 'function') {
+			matches = arg.call(this, el, i);
+		}
+
+		return matches;
+	});
+
+	return new rQuery(result);
+};
+
 
 // Extend useful array methods
 rQuery.prototype.forEach = arr.forEach;
@@ -68,6 +85,23 @@ function getElements(arg) {
 	}
 
 	return list;
+}
+
+// Source: https://davidwalsh.name/element-matches-selector
+function selectorMatches(el, selector) {
+
+	var ep = typeof Element === 'object' ? Element.prototype : 0;
+
+	var fn = function(s) {
+		return [].indexOf.call(document.querySelectorAll(s), this) !== -1;
+	};
+
+	if (ep) {
+		fn = p.matches || p.webkitMatchesSelector ||
+			p.mozMatchesSelector || p.msMatchesSelector || fn;
+	}
+
+	return fn.call(el, selector);
 }
 
 function isNodeList(object) {
