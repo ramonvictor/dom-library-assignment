@@ -17,38 +17,34 @@ function rQuery(option) {
 
 // Public
 // ----------------
-var api = {
-	get: function(index) {
-		if (typeof index === 'undefined') {
-			return [].slice.call(this);
-		}
-
-		return this[index];
-	},
-
-	eq: function(index) {
-		return new rQuery(this[index]);
-	},
-
-	html: function() {
-		return this.get(0).innerHTML;
-	},
-
-	text: function() {
-		return this.get(0).textContent;
+rQuery.prototype.get = function(index) {
+	if (typeof index === 'undefined') {
+		return [].slice.call(this);
 	}
+
+	return this[index];
 };
 
-// Extend useful array methods
-api.forEach = arr.forEach;
-api.reduce = arr.reduce;
-api.push = arr.push;
-api.sort = arr.sort;
-api.splice = arr.splice;
-api.indexOf = arr.indexOf;
+rQuery.prototype.eq = function(index) {
+	return new rQuery(this.get(index));
+};
 
-// Extending rQuery
-extend(rQuery.prototype, api);
+rQuery.prototype.html = function() {
+	return this.get(0).innerHTML;
+};
+
+rQuery.prototype.text = function() {
+	return this.get(0).textContent;
+};
+
+
+// Extend useful array methods
+rQuery.prototype.forEach = arr.forEach;
+rQuery.prototype.reduce = arr.reduce;
+rQuery.prototype.push = arr.push;
+rQuery.prototype.sort = arr.sort;
+rQuery.prototype.splice = arr.splice;
+rQuery.prototype.indexOf = arr.indexOf;
 
 // Private
 // ----------------
@@ -86,16 +82,6 @@ function isNodeList(object) {
 	}
 
 	return false;
-}
-
-function extend(a, b) {
-	for (var key in b) {
-		if (b.hasOwnProperty(key)) {
-			a[key] = b[key];
-		}
-	}
-
-	return a;
 }
 
 // Exports
