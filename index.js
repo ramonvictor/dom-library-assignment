@@ -54,6 +54,20 @@ rQuery.prototype.filter = function(arg) {
 	return new rQuery(result);
 };
 
+rQuery.prototype.find = function(s) {
+	var elements = [];
+	var children;
+
+	this.forEach(function(el) {
+		children = [].slice.call(el.querySelectorAll(s));
+		if (children.length > 0) {
+			elements = elements.concat(children);
+		}
+	});
+
+	return new rQuery(elements);
+};
+
 
 // Extend useful array methods
 rQuery.prototype.forEach = arr.forEach;
@@ -89,9 +103,7 @@ function getElements(arg) {
 
 // Source: https://davidwalsh.name/element-matches-selector
 function selectorMatches(el, selector) {
-
 	var ep = typeof Element === 'object' ? Element.prototype : 0;
-
 	var fn = function(s) {
 		return [].indexOf.call(document.querySelectorAll(s), this) !== -1;
 	};

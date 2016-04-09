@@ -85,3 +85,11 @@ test('filter', () => {
     t.equal(o3.length, 3)
     t.equal(o4.eq(0).html(), collection[3].innerHTML)
 });
+
+test('find', () => {
+    var collection = qsa('.findme')
+    var o = $('.container').find('.findme')
+
+    t.equal(o.length, 2)
+    t.deepEqual(o.get(), collection)
+});
