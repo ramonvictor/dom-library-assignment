@@ -68,14 +68,20 @@ test('receive self', () => {
     t.equal(el[0], el2[0])
 })
 
-// TODO: write test case
-// test('filter')
+test('filter', () => {
+    var collection = qsa('#test2 > li')
+    var children = qsa('.container > .child')
+    var o = $(collection).filter('.third')
+    var o1 = $(children).filter('div')
+    var o2 = $(collection).filter('li[data-index]')
+    var o3 = $(collection).filter(':not(.third)')
+    var o4 = $(collection).filter((el, i) => {
+        return el.classList.contains('is-last')
+    })
 
-// $('li').filter('.xxx')
-// $('li').filter('input')
-// $('li').filter('input[type=date]')
-// $('li').filter(':not(input)')
-// $('li').not('input')
-// $('li').filter(function (el, i) {
-//     return el.style.display !== 'block'
-// }).eq(1).html()
+    t.equal(o.get(0), collection[2])
+    t.equal(o1.text(), children[0].textContent)
+    t.equal(o2.get(0), collection[1])
+    t.equal(o3.length, 3)
+    t.equal(o4.eq(1).html(), collection[3].innerHTML)
+});
