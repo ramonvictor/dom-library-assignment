@@ -68,6 +68,21 @@ rQuery.prototype.find = function(s) {
 	return new rQuery(elements);
 };
 
+rQuery.prototype.on = function(eventType, callback) {
+	this.forEach(function(el) {
+		el.addEventListener(eventType, callback.bind(el), false);
+	});
+
+	return this;
+};
+
+// rQuery.prototype.off = function(eventType, callback) {
+// 	this.forEach(function(el) {
+// 		el.removeEventListener(eventType, callback, false);
+// 	});
+// 	return this;
+// };
+
 
 // Extend useful array methods
 rQuery.prototype.forEach = arr.forEach;
