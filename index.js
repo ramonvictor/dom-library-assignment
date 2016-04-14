@@ -89,7 +89,7 @@ rQuery.prototype.off = function(event) {
 			});
 		}
 
-		rEvents.clearListeners(el.rid);
+		rEvents.clearListeners(el.rid, event);
 	});
 
 	return this;
@@ -187,8 +187,8 @@ rEvents.getListeners = function(id, event) {
 	return this[id][event];
 };
 
-rEvents.clearListeners = function(id) {
-	this[id] = [];
+rEvents.clearListeners = function(id, event) {
+	this[id][event] = [];
 };
 
 // Exports
