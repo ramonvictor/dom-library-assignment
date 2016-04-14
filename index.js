@@ -1,5 +1,6 @@
 var arr = [];
 var filter = arr.filter;
+var rEvents = {};
 
 function rQuery(option) {
 	var elements = getElements(option);
@@ -10,6 +11,7 @@ function rQuery(option) {
 
 	// Mimic array
 	for (var i = 0; i < elements.length; i++) {
+		elements[i].rid = elements[i].rid || getRandomId();
 		this[i] = elements[i];
 	}
 
@@ -68,21 +70,30 @@ rQuery.prototype.find = function(s) {
 	return new rQuery(elements);
 };
 
-rQuery.prototype.on = function(eventType, callback) {
+rQuery.prototype.on = function(event, callback) {
 	this.forEach(function(el) {
-		el.addEventListener(eventType, callback.bind(el), false);
+		el.addEventListener(event, callback.bind(el), false);
+		rEvents.registerListener(el.rid, event, callback.bind(el));
 	});
 
 	return this;
 };
 
-// rQuery.prototype.off = function(eventType, callback) {
-// 	this.forEach(function(el) {
-// 		el.removeEventListener(eventType, callback, false);
-// 	});
-// 	return this;
-// };
+rQuery.prototype.off = function(event) {
+	this.forEach(function(el) {
+		var listeners = rEvents.getListeners(el.rid, event);
 
+		if (listeners.length > 0) {
+			listeners.forEach(function(listener) {
+				el.removeEventListener(event, listener, false);
+			});
+		}
+
+		rEvents.clearListeners(el.rid);
+	});
+
+	return this;
+};
 
 // Extend useful array methods
 rQuery.prototype.forEach = arr.forEach;
@@ -145,8 +156,43 @@ function isNodeList(object) {
 	return false;
 }
 
+function getRandomId() {
+	var text = '';
+	var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+	for (var i = 0; i < 5; i++) {
+		text += possible.charAt(Math.floor(Math.random() * possible.length));
+	}
+
+	return text;
+}
+
+// Handle event listeners
+// -----------------------
+rEvents.registerListener = function(id, event, listener) {
+	this[id] = this[id] || {};
+
+	if (this[id].hasOwnProperty(event)) {
+		this[id][event].push(listener)
+	} else  {
+		this[id][event] = [listener];
+	}
+};
+
+rEvents.getListeners = function(id, event) {
+	if (!this.hasOwnProperty(id) || !this[id].hasOwnProperty(event)) {
+		return '';
+	}
+
+	return this[id][event];
+};
+
+rEvents.clearListeners = function(id) {
+	this[id] = [];
+};
+
 // Exports
-// ----------------
+// -----------------------
 module.exports = function(s) {
 	return new rQuery(s);
 };
